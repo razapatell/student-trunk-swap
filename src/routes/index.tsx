@@ -2,13 +2,14 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import {
   ArrowDown, ArrowRight, BookOpen, Calculator, Camera, Check, ChevronRight,
-  CircleDollarSign, Clock3, Eye, Flag, Heart, Home, KeyRound, Laptop,
-  LockKeyhole, Menu, PackageCheck, QrCode, Search, ShieldCheck, SlidersHorizontal,
-  Sparkles, UserRoundCheck, Users, X, Zap,
+  CircleDollarSign, Clock, Clock3, Eye, Facebook, Flag, Heart, Home, Instagram,
+  KeyRound, Laptop, Linkedin, LockKeyhole, Mail, Menu, PackageCheck, Phone,
+  QrCode, Search, ShieldCheck, SlidersHorizontal, Sparkles, UserRoundCheck,
+  Users, X, Youtube, Zap,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import logo from "@/assets/swap-logo-horizontal.jpeg.asset.json";
-import roundLogo from "@/assets/swap-logo-round.jpeg.asset.json";
+import logo from "@/assets/swap-logo-horizontal.jpeg";
+import roundLogo from "@/assets/swap-logo-round.jpeg";
 import heroArt from "@/assets/swap-hero.jpg";
 import residencyArt from "@/assets/swap-residency.jpg";
 import servicesArt from "@/assets/swap-services.jpg";
@@ -22,7 +23,9 @@ export const Route = createFileRoute("/")({
       { property: "og:title", content: "SWAP — Buy. Sell. Repeat. On Campus." },
       { property: "og:description", content: "The campus-centric marketplace for goods, services, rooms, and lost belongings." },
       { property: "og:type", content: "website" },
+      { property: "og:image", content: "/swap-logo-horizontal.jpeg" },
       { name: "twitter:card", content: "summary_large_image" },
+      { name: "twitter:image", content: "/swap-logo-horizontal.jpeg" },
     ],
   }),
   component: Index,
@@ -53,6 +56,14 @@ function SectionLabel({ children, index }: { children: React.ReactNode; index: s
   return <div className="section-label"><span>{index}</span>{children}</div>;
 }
 
+function TwitterXIcon(props: React.SVGProps<SVGSVGElement>) {
+  return (
+    <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" {...props}>
+      <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+    </svg>
+  );
+}
+
 function Index() {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
@@ -77,16 +88,28 @@ function Index() {
   return (
     <div className="site-shell">
       <header className={`topbar ${scrolled ? "topbar-scrolled" : ""}`}>
-        <a href="#top" className="brand" aria-label="SWAP home"><img src={logo.url} alt="SWAP — Buy. Sell. Repeat." /></a>
+        <a href="#top" className="brand" aria-label="SWAP home"><img src={logo} alt="SWAP — Buy. Sell. Repeat." /></a>
         <nav className="desktop-nav" aria-label="Primary navigation">
           {navItems.map(([label, id]) => <a key={id} href={`#${id}`}>{label}</a>)}
         </nav>
         <div className="nav-actions">
           <Button variant="ghost" className="hidden sm:inline-flex">Login</Button>
-          <Button onClick={() => scrollTo("marketplace")}>Get Started <ArrowRight /></Button>
+          <Button onClick={() => scrollTo("marketplace")}>Register <ArrowRight /></Button>
           <Button variant="outline" size="icon" className="menu-button" aria-label="Open menu" onClick={() => setMenuOpen(!menuOpen)}>{menuOpen ? <X /> : <Menu />}</Button>
         </div>
-        {menuOpen && <nav className="mobile-nav">{navItems.map(([label, id]) => <a key={id} href={`#${id}`} onClick={() => setMenuOpen(false)}>{label}<ArrowRight /></a>)}</nav>}
+        {menuOpen && (
+          <nav className="mobile-nav">
+            <div className="mobile-nav-header">
+              <img src={logo} alt="SWAP — Buy. Sell. Repeat." />
+              <span className="live-dot" />
+            </div>
+            {navItems.map(([label, id]) => (
+              <a key={id} href={`#${id}`} onClick={() => setMenuOpen(false)}>
+                {label}<ArrowRight />
+              </a>
+            ))}
+          </nav>
+        )}
       </header>
 
       <main id="top">
@@ -107,7 +130,7 @@ function Index() {
             <div className="image-frame hero-image-frame"><img src={heroArt} alt="Illustrated campus marketplace with books, laptop, calculator, headphones, backpack, and verification card" width={1536} height={1024} /></div>
             <div className="floating-tag tag-one"><QrCode /> Verified handover</div>
             <div className="floating-tag tag-two"><LockKeyhole /> Private by design</div>
-            <div className="hero-stamp"><img src={roundLogo.url} alt="SWAP" /></div>
+            <div className="hero-stamp"><img src={roundLogo} alt="SWAP" /></div>
           </div>
         </section>
 
@@ -155,9 +178,19 @@ function Index() {
             </div>
             <div className="trust-diagram">
               <div className="person-node"><Users /> BUYER</div><ArrowDown />
-              <div className="platform-node"><img src={roundLogo.url} alt="SWAP platform" /><span>PLATFORM</span></div><ArrowDown />
+              <div className="platform-node"><img src={roundLogo} alt="SWAP platform" /><span>PLATFORM</span></div><ArrowDown />
               <div className="person-node"><UserRoundCheck /> SELLER</div>
-              <div className="qr-ticket"><div className="qr-heading"><div><small>ORDER</small><strong>#SWP-2048</strong></div><span>VERIFICATION READY</span></div><div className="qr-grid" aria-label="Simulated QR verification code">{Array.from({ length: 49 }).map((_, i) => <i key={i} className={(i * 7 + i * i) % 5 < 2 ? "filled" : ""} />)}<b /></div><small>Structured handover verification</small></div>
+              <div className="qr-ticket">
+                <div className="qr-heading">
+                  <div className="qr-brand-row">
+                    <img src={roundLogo} alt="SWAP" className="qr-mini-badge" />
+                    <div><small>ORDER</small><strong>#SWP-2048</strong></div>
+                  </div>
+                  <span>VERIFICATION READY</span>
+                </div>
+                <div className="qr-grid" aria-label="Simulated QR verification code">{Array.from({ length: 49 }).map((_, i) => <i key={i} className={(i * 7 + i * i) % 5 < 2 ? "filled" : ""} />)}<b /></div>
+                <small>Structured handover verification</small>
+              </div>
             </div>
           </div>
           <div className="responsible-strip"><span>Designed to reduce transaction risk.</span><span>Privacy-first transaction flow.</span><span>Not a guarantee against fraud.</span></div>
@@ -180,7 +213,16 @@ function Index() {
 
         <section className="sell section-pad reveal" id="sell">
           <div className="sell-copy"><SectionLabel index="06">Sell + earn</SectionLabel><h2>YOUR UNUSED STUFF CAN BECOME SOMEONE ELSE’S NEXT ESSENTIAL.</h2><p>Sell products you no longer need — and give other students access to useful items at a lower cost.</p><div className="check-grid">{["Upload photos", "Add condition", "Set price", "Submit listing", "Listing review", "Get discovered", "Verified handover", "Track earnings"].map((x) => <span key={x}><Check />{x}</span>)}</div><Button size="lg">List an item <ArrowRight /></Button></div>
-          <div className="dashboard-card"><div className="dashboard-top"><strong>SELLER DASHBOARD</strong><span>Example dashboard</span></div><div className="stats-grid"><div><small>Active listings</small><b>3</b></div><div><small>Items sold</small><b>8</b></div><div className="earnings"><small>Earnings</small><b>₹12,450</b></div></div><div className="mini-list"><span><BookOpen /> Textbook set <b>Listed</b></span><span><Calculator /> Scientific calculator <b>In review</b></span><span><Laptop /> Laptop stand <b>Sold</b></span></div></div>
+          <div className="dashboard-card">
+            <div className="dashboard-top">
+              <div className="dash-brand-row">
+                <img src={roundLogo} alt="SWAP" className="dash-mini-badge" />
+                <strong>SELLER DASHBOARD</strong>
+              </div>
+              <span>Example dashboard</span>
+            </div>
+            <div className="stats-grid"><div><small>Active listings</small><b>3</b></div><div><small>Items sold</small><b>8</b></div><div className="earnings"><small>Earnings</small><b>₹12,450</b></div></div><div className="mini-list"><span><BookOpen /> Textbook set <b>Listed</b></span><span><Calculator /> Scientific calculator <b>In review</b></span><span><Laptop /> Laptop stand <b>Sold</b></span></div>
+          </div>
         </section>
 
         <section className="services section-pad reveal" id="services">
@@ -200,20 +242,142 @@ function Index() {
 
         <section className="ecosystem section-pad reveal">
           <SectionLabel index="10">The ecosystem</SectionLabel><h2>ONE CAMPUS.<br />MANY NEEDS.</h2>
-          <div className="ecosystem-map"><div className="ecosystem-center"><img src={roundLogo.url} alt="SWAP" /></div>{[["Marketplace", "Buy & Sell", PackageCheck], ["Residency", "Rooms & Roommates", Home], ["Services", "Student Skills", Sparkles], ["Lost & Found", "Recover What Matters", Search]].map(([title, sub, Icon], i) => { const EcoIcon = Icon as typeof Home; return <article className={`eco eco-${i}`} key={title as string}><EcoIcon /><strong>{title as string}</strong><span>{sub as string}</span></article>; })}</div>
+          <div className="ecosystem-map"><div className="ecosystem-center"><img src={roundLogo} alt="SWAP" /></div>{[["Marketplace", "Buy & Sell", PackageCheck], ["Residency", "Rooms & Roommates", Home], ["Services", "Student Skills", Sparkles], ["Lost & Found", "Recover What Matters", Search]].map(([title, sub, Icon], i) => { const EcoIcon = Icon as typeof Home; return <article className={`eco eco-${i}`} key={title as string}><EcoIcon /><strong>{title as string}</strong><span>{sub as string}</span></article>; })}</div>
         </section>
 
         <section className="privacy section-pad reveal" id="privacy"><div><SectionLabel index="11">Privacy</SectionLabel><h2>YOUR IDENTITY<br />ISN’T THE PRODUCT.</h2><p>Buyers and sellers do not need to publicly expose their personal identity while browsing or purchasing. Identity disclosure occurs only when the transaction reaches the required stage.</p><span className="privacy-note">Privacy-first, not absolute anonymity.</span></div><div className="lock-visual"><div className="lock-ring"><LockKeyhole /></div><strong>PRIVATE</strong><span>UNTIL NEEDED</span></div></section>
 
         <section className="admin section-pad reveal">
           <div className="admin-copy"><SectionLabel index="12">Accountability</SectionLabel><h2>STRUCTURED FOR ACCOUNTABILITY.</h2><p>Administrators can review listings, manage users, monitor transaction status, investigate reports and handle disputes.</p><div className="admin-tags">{["Users", "Listings", "Pending approvals", "Transactions", "Reports", "Payment status", "Verification status", "Disputes"].map((x) => <span key={x}>{x}</span>)}</div></div>
-          <div className="moderation-card"><div className="mod-head"><span><Flag /> MODERATION QUEUE</span><b>01 pending</b></div><div className="flag-item"><div className="flag-preview"><PackageCheck /></div><div><small>Listing flagged</small><h3>Potentially misleading product details</h3><p>Compare the photos, condition and description before taking action.</p></div></div><div className="mod-actions"><Button variant="outline">Review</Button><Button>Approve</Button><Button variant="outline">Reject</Button></div></div>
+          <div className="moderation-card">
+            <div className="mod-head">
+              <span className="mod-brand-row">
+                <img src={roundLogo} alt="SWAP" className="dash-mini-badge" />
+                <Flag /> MODERATION QUEUE
+              </span>
+              <b>01 pending</b>
+            </div>
+            <div className="flag-item"><div className="flag-preview"><PackageCheck /></div><div><small>Listing flagged</small><h3>Potentially misleading product details</h3><p>Compare the photos, condition and description before taking action.</p></div></div><div className="mod-actions"><Button variant="outline">Review</Button><Button>Approve</Button><Button variant="outline">Reject</Button></div>
+          </div>
         </section>
 
-        <section className="final-cta section-pad reveal"><div className="final-logo"><img src={logo.url} alt="SWAP — Buy. Sell. Repeat." /></div><h2>BUILT FOR THE WAY<br />STUDENTS ACTUALLY LIVE.</h2><p>Buy what you need. Sell what you no longer need.<br />Find your next room. Turn your skills into opportunities.<br />Recover what matters.</p><div className="hero-actions"><Button size="lg" onClick={() => scrollTo("marketplace")}>Get started with SWAP <ArrowRight /></Button><Button size="lg" variant="outline" onClick={() => scrollTo("marketplace")}>Explore the marketplace</Button></div></section>
+        <section className="final-cta section-pad reveal"><div className="final-logo"><img src={logo} alt="SWAP — Buy. Sell. Repeat." /></div><h2>BUILT FOR THE WAY<br />STUDENTS ACTUALLY LIVE.</h2><p>Buy what you need. Sell what you no longer need.<br />Find your next room. Turn your skills into opportunities.<br />Recover what matters.</p><div className="hero-actions"><Button size="lg" onClick={() => scrollTo("marketplace")}>Register with SWAP <ArrowRight /></Button><Button size="lg" variant="outline" onClick={() => scrollTo("marketplace")}>Explore the marketplace</Button></div></section>
       </main>
 
-      <footer><div className="footer-top"><img src={logo.url} alt="SWAP" /><p>A campus-centric marketplace designed for more structured, private student commerce.</p></div><div className="footer-links">{[...navItems.map((x) => x[0]), "Safety", "Privacy", "Terms", "Contact"].map((x) => <a href={x === "Safety" ? "#safety" : x === "Privacy" ? "#privacy" : "#top"} key={x}>{x}</a>)}</div><div className="footer-bottom"><span>© 2026 SWAP</span><span>BUY. SELL. REPEAT.</span><span>Made for campus life.</span></div></footer>
+      <footer>
+        <div className="footer-main">
+          {/* Column 1: Brand & Social Handles */}
+          <div className="footer-col footer-brand">
+            <a href="#top" className="footer-brand-logo" aria-label="SWAP home">
+              <img src={logo} alt="SWAP — Buy. Sell. Repeat." />
+            </a>
+            <p>
+              The campus-centric marketplace designed for structured, private student commerce.
+              Buy, sell, share rooms, offer skills, and recover lost belongings with verified handovers.
+            </p>
+            <div className="footer-social-section">
+              <span className="social-title">Connect with us</span>
+              <div className="social-icons-row" aria-label="Social media channels">
+                <a href="#" className="social-btn" aria-label="YouTube" title="YouTube">
+                  <Youtube />
+                </a>
+                <a href="#" className="social-btn" aria-label="Instagram" title="Instagram">
+                  <Instagram />
+                </a>
+                <a href="#" className="social-btn" aria-label="Facebook" title="Facebook">
+                  <Facebook />
+                </a>
+                <a href="#" className="social-btn" aria-label="LinkedIn" title="LinkedIn">
+                  <Linkedin />
+                </a>
+                <a href="#" className="social-btn" aria-label="X (Twitter)" title="X">
+                  <TwitterXIcon />
+                </a>
+              </div>
+            </div>
+          </div>
+
+          {/* Column 2: Quick Links */}
+          <div className="footer-col">
+            <h4>Campus Hub</h4>
+            <ul>
+              {navItems.map(([label, id]) => (
+                <li key={id}>
+                  <a href={`#${id}`}>{label}</a>
+                </li>
+              ))}
+              <li>
+                <a href="#safety">Trust Architecture</a>
+              </li>
+              <li>
+                <a href="#sell">Seller Center</a>
+              </li>
+            </ul>
+          </div>
+
+          {/* Column 3: Contact & Support */}
+          <div className="footer-col">
+            <h4>Contact & Support</h4>
+            <div className="footer-contact-box">
+              <div className="contact-card">
+                <div className="contact-card-header">
+                  <Phone /> Helpline Number
+                </div>
+                <a href="tel:8879323529" className="contact-value">+91 8879323529</a>
+                <div className="contact-timing">
+                  <span className="timing-dot" />
+                  <Clock /> Available 9:00 AM – 11:00 PM
+                </div>
+              </div>
+
+              <div className="contact-card">
+                <div className="contact-card-header">
+                  <Mail /> Official Email
+                </div>
+                <a href="mailto:mgmswap@gmail.com" className="contact-value">mgmswap@gmail.com</a>
+                <div className="contact-timing">
+                  <span>Student & Campus Inquiries</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Column 4: Legal & Policies */}
+          <div className="footer-col">
+            <h4>Legal & Policies</h4>
+            <ul>
+              <li>
+                <a href="#privacy">Terms & Conditions</a>
+              </li>
+              <li>
+                <a href="#privacy">Privacy Policy</a>
+              </li>
+              <li>
+                <a href="#safety">Handover Verification Protocol</a>
+              </li>
+              <li>
+                <a href="#privacy">Data & Identity Security</a>
+              </li>
+              <li>
+                <a href="#lost-found">Bounty Claim Guidelines</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        {/* Footer Bottom Bar */}
+        <div className="footer-bottom">
+          <div className="footer-copyright">
+            <span>© 2026 SWAP. All rights reserved.</span>
+            <span className="footer-divider">·</span>
+            <span>BUY. SELL. REPEAT.</span>
+          </div>
+          <div className="acronys-credit" title="Crafted by Acronys">
+            <span>Made by</span>
+            <strong>Acronys</strong>
+          </div>
+        </div>
+      </footer>
     </div>
   );
 }
